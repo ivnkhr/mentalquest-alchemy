@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: productivity_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: dev_root_password
+      MYSQL_DATABASE: productivity_db
+      MYSQL_USER: dev_user
+      MYSQL_PASSWORD: dev_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./backend/database/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - productivity_network
+
+  # Optional: phpMyAdmin for database management
+  phpmyadmin:
+    image: phpmyadmin:latest
+    container_name: productivity_phpmyadmin
+    restart: unless-stopped
+    environment:
+      PMA_HOST: mysql
+      PMA_PORT: 3306
+      PMA_USER: dev_user
+      PMA_PASSWORD: dev_password
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql
+    networks:
+      - productivity_network
+
+volumes:
+  mysql_data:
+
+networks:
+  productivity_network:
+    driver: bridge

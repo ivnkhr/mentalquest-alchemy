@@ -1,0 +1,8 @@
+{
+  "name": "MentalQuest Alchemy",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular",
+  "defaultProject": "frontend"
+}
