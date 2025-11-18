@@ -39,7 +39,7 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthActions.loginSuccess),
-        tap(() => this.router.navigate(['/rocks']))
+        tap(() => this.router.navigate(['/dashboard']))
       ),
     { dispatch: false }
   );
@@ -71,7 +71,7 @@ export class AuthEffects {
     () =>
       this.actions$.pipe(
         ofType(AuthActions.registerSuccess),
-        tap(() => this.router.navigate(['/rocks']))
+        tap(() => this.router.navigate(['/dashboard']))
       ),
     { dispatch: false }
   );

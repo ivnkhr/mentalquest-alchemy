@@ -1,9 +1,14 @@
 {
-  "name": "frontend",
-  "short_name": "frontend",
+  "name": "MentalQuest Alchemy",
+  "short_name": "Alchemy",
+  "description": "Transform your goals (Rocks) into achievements (Gems) with powerful productivity tools",
   "display": "standalone",
+  "orientation": "portrait",
   "scope": "./",
   "start_url": "./",
+  "theme_color": "#3880ff",
+  "background_color": "#ffffff",
+  "categories": ["productivity", "lifestyle"],
   "icons": [
     {
       "src": "icons/icon-72x72.png",
