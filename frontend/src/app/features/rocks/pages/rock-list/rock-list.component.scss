@@ -1,0 +1,16 @@
+.loading-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 200px;
+}
+
+.empty-message {
+  text-align: center;
+  color: var(--ion-color-medium);
+  margin: 2rem 0;
+}
+
+ion-list {
+  background: transparent;
+}

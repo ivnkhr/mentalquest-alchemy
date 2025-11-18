@@ -1,0 +1,23 @@
+<ion-card button>
+  <ion-card-header>
+    <div class="card-header-content">
+      <div>
+        <ion-card-title>{{ rock.title }}</ion-card-title>
+        @if (rock.description) {
+          <ion-card-subtitle>{{ rock.description }}</ion-card-subtitle>
+        }
+      </div>
+      <ion-badge [color]="statusColor">{{ statusLabel }}</ion-badge>
+    </div>
+  </ion-card-header>
+
+  <ion-card-content>
+    <div class="progress-section">
+      <div class="progress-text">
+        <span>Progress</span>
+        <span>{{ rock.progress }}%</span>
+      </div>
+      <ion-progress-bar [value]="progressValue" [color]="statusColor"></ion-progress-bar>
+    </div>
+  </ion-card-content>
+</ion-card>

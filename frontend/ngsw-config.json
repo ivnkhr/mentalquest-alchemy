@@ -26,5 +26,34 @@
         ]
       }
     }
+  ],
+  "dataGroups": [
+    {
+      "name": "api-performance",
+      "urls": [
+        "*/api/rocks",
+        "*/api/rocks/*",
+        "*/api/edges/*"
+      ],
+      "cacheConfig": {
+        "strategy": "performance",
+        "maxSize": 100,
+        "maxAge": "1d",
+        "timeout": "5s"
+      }
+    },
+    {
+      "name": "api-freshness",
+      "urls": [
+        "*/api/auth/*",
+        "*/api/sync"
+      ],
+      "cacheConfig": {
+        "strategy": "freshness",
+        "maxSize": 50,
+        "maxAge": "12h",
+        "timeout": "3s"
+      }
+    }
   ]
 }

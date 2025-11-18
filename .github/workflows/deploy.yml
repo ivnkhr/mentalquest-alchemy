@@ -1,0 +1,108 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Deployment environment'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+          - production
+          - staging
+
+jobs:
+  deploy-backend:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment || 'production' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        working-directory: backend
+        run: npm ci --production
+
+      - name: Build backend
+        working-directory: backend
+        run: npm run build
+
+      - name: Deploy to DigitalOcean
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.DO_SSH_KEY }}
+          SSH_HOST: ${{ secrets.DO_HOST }}
+          SSH_USER: ${{ secrets.DO_USER }}
+        run: |
+          echo "Deployment to DigitalOcean would happen here"
+          echo "Example steps:"
+          echo "1. SSH into droplet"
+          echo "2. Pull latest code"
+          echo "3. Install dependencies"
+          echo "4. Run migrations"
+          echo "5. Restart PM2 process"
+          echo ""
+          echo "SSH_HOST: $SSH_HOST"
+          echo "SSH_USER: $SSH_USER"
+
+      - name: Health check
+        run: |
+          echo "Health check would be performed here"
+          echo "curl -f https://api.mentalquest-alchemy.com/health || exit 1"
+
+  deploy-frontend:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event.inputs.environment || 'production' }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        working-directory: frontend
+        run: npm ci
+
+      - name: Build frontend
+        working-directory: frontend
+        env:
+          NODE_ENV: production
+        run: npm run build -- --configuration=production
+
+      - name: Deploy to hosting
+        run: |
+          echo "Deployment to hosting would happen here"
+          echo "Options:"
+          echo "1. Deploy to DigitalOcean Spaces (S3-compatible)"
+          echo "2. Deploy to same DigitalOcean droplet with Nginx"
+          echo "3. Deploy to Vercel/Netlify"
+          echo ""
+          echo "Example with rsync to DigitalOcean:"
+          echo "rsync -avz frontend/dist/frontend/browser/ user@host:/var/www/mentalquest-alchemy/"
+
+      - name: Purge CDN cache
+        run: |
+          echo "CDN cache purge would happen here if using CDN"
+
+  notify:
+    needs: [deploy-backend, deploy-frontend]
+    runs-on: ubuntu-latest
+    if: always()
+
+    steps:
+      - name: Send notification
+        run: |
+          echo "Deployment notification would be sent here"
+          echo "Status: ${{ needs.deploy-backend.result }} (backend), ${{ needs.deploy-frontend.result }} (frontend)"

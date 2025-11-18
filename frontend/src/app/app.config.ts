@@ -1,25 +1,38 @@
-import { ApplicationConfig, provideBrowserGlobalErrorListeners, provideZonelessChangeDetection, isDevMode } from '@angular/core';
+import {
+  ApplicationConfig,
+  provideBrowserGlobalErrorListeners,
+  provideZonelessChangeDetection,
+  isDevMode,
+} from '@angular/core';
 import { provideRouter } from '@angular/router';
-
+import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';
 import { provideServiceWorker } from '@angular/service-worker';
 import { provideStore } from '@ngrx/store';
 import { provideEffects } from '@ngrx/effects';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
+import { authReducer } from './core/auth/store/auth.reducer';
+import { AuthEffects } from './core/auth/store/auth.effects';
+import { authInterceptor } from './core/auth/interceptors/auth.interceptor';
+import { rocksReducer } from './features/rocks/store/rocks.reducer';
+import { RocksEffects } from './features/rocks/store/rocks.effects';
+import { SyncEffects } from './core/sync/sync.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideZonelessChangeDetection(),
-    provideRouter(routes), provideServiceWorker('ngsw-worker.js', {
-        enabled: !isDevMode(),
-        registrationStrategy: 'registerWhenStable:30000'
-    }), provideServiceWorker('ngsw-worker.js', {
-        enabled: !isDevMode(),
-        registrationStrategy: 'registerWhenStable:30000'
+    provideRouter(routes),
+    provideHttpClient(withInterceptors([authInterceptor])),
+    provideServiceWorker('ngsw-worker.js', {
+      enabled: !isDevMode(),
+      registrationStrategy: 'registerWhenStable:30000',
     }),
-    provideStore(),
-    provideEffects(),
-    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() })
-]
+    provideStore({
+      auth: authReducer,
+      rocks: rocksReducer,
+    }),
+    provideEffects([AuthEffects, RocksEffects, SyncEffects]),
+    provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
+  ],
 };
