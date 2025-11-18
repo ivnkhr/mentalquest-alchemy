@@ -1,0 +1,79 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>My Rocks</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onLogout()">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+  <ion-toolbar>
+    <ion-segment [(ngModel)]="selectedSegment" (ionChange)="onSegmentChange($event)">
+      <ion-segment-button [value]="RockStatus.ACTIVE">
+        <ion-label>Active</ion-label>
+      </ion-segment-button>
+      <ion-segment-button [value]="RockStatus.GEM">
+        <ion-label>Gems</ion-label>
+      </ion-segment-button>
+      <ion-segment-button [value]="RockStatus.ARCHIVED">
+        <ion-label>Archived</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  @if (loading$ | async) {
+    <div class="loading-container">
+      <ion-spinner name="crescent"></ion-spinner>
+    </div>
+  }
+
+  @if (selectedSegment === RockStatus.ACTIVE) {
+    <ion-list>
+      @for (rock of activeRocks$ | async; track rock.id) {
+        <app-rock-card [rock]="rock" (click)="onRockClick(rock.id)"></app-rock-card>
+      } @empty {
+        <ion-card>
+          <ion-card-content>
+            <p class="empty-message">No active rocks. Create one to get started!</p>
+          </ion-card-content>
+        </ion-card>
+      }
+    </ion-list>
+  }
+
+  @if (selectedSegment === RockStatus.GEM) {
+    <ion-list>
+      @for (rock of gems$ | async; track rock.id) {
+        <app-rock-card [rock]="rock" (click)="onRockClick(rock.id)"></app-rock-card>
+      } @empty {
+        <ion-card>
+          <ion-card-content>
+            <p class="empty-message">No gems yet. Complete a rock to turn it into a gem!</p>
+          </ion-card-content>
+        </ion-card>
+      }
+    </ion-list>
+  }
+
+  @if (selectedSegment === RockStatus.ARCHIVED) {
+    <ion-list>
+      @for (rock of archivedRocks$ | async; track rock.id) {
+        <app-rock-card [rock]="rock" (click)="onRockClick(rock.id)"></app-rock-card>
+      } @empty {
+        <ion-card>
+          <ion-card-content>
+            <p class="empty-message">No archived rocks.</p>
+          </ion-card-content>
+        </ion-card>
+      }
+    </ion-list>
+  }
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="onAddRock()">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>

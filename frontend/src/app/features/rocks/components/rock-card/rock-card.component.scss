@@ -1,0 +1,32 @@
+.card-header-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.progress-section {
+  margin-top: 0.5rem;
+}
+
+.progress-text {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--ion-color-medium);
+}
+
+ion-card {
+  margin: 0.5rem 0;
+  cursor: pointer;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+ion-badge {
+  flex-shrink: 0;
+}

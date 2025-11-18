@@ -14,6 +14,8 @@ import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { authReducer } from './core/auth/store/auth.reducer';
 import { AuthEffects } from './core/auth/store/auth.effects';
 import { authInterceptor } from './core/auth/interceptors/auth.interceptor';
+import { rocksReducer } from './features/rocks/store/rocks.reducer';
+import { RocksEffects } from './features/rocks/store/rocks.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -27,8 +29,9 @@ export const appConfig: ApplicationConfig = {
     }),
     provideStore({
       auth: authReducer,
+      rocks: rocksReducer,
     }),
-    provideEffects([AuthEffects]),
+    provideEffects([AuthEffects, RocksEffects]),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
   ],
 };
