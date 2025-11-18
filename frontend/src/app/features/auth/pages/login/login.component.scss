@@ -1,0 +1,24 @@
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+  padding: 1rem;
+}
+
+ion-card {
+  max-width: 500px;
+  width: 100%;
+}
+
+ion-item {
+  margin-bottom: 1rem;
+}
+
+.register-link {
+  a {
+    color: var(--ion-color-primary);
+    text-decoration: none;
+    font-weight: 500;
+  }
+}

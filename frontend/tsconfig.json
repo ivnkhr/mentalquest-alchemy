@@ -3,6 +3,11 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "shared/types": ["../shared/types/index.ts"],
+      "shared/types/*": ["../shared/types/*"]
+    },
     "strict": true,
     "noImplicitOverride": true,
     "noPropertyAccessFromIndexSignature": true,
