@@ -35,7 +35,14 @@ export class RocksEffects {
       ofType(RocksActions.loadRockDetail),
       exhaustMap(({ id }) =>
         this.rocksService.getRock(id).pipe(
-          map((rock) => RocksActions.loadRockDetailSuccess({ rock })),
+          map((rock) => {
+            if (!rock) {
+              return RocksActions.loadRockDetailFailure({
+                error: 'Rock not found',
+              });
+            }
+            return RocksActions.loadRockDetailSuccess({ rock });
+          }),
           catchError((error) =>
             of(
               RocksActions.loadRockDetailFailure({

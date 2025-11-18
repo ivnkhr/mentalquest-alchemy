@@ -16,6 +16,7 @@ import { AuthEffects } from './core/auth/store/auth.effects';
 import { authInterceptor } from './core/auth/interceptors/auth.interceptor';
 import { rocksReducer } from './features/rocks/store/rocks.reducer';
 import { RocksEffects } from './features/rocks/store/rocks.effects';
+import { SyncEffects } from './core/sync/sync.effects';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -31,7 +32,7 @@ export const appConfig: ApplicationConfig = {
       auth: authReducer,
       rocks: rocksReducer,
     }),
-    provideEffects([AuthEffects, RocksEffects]),
+    provideEffects([AuthEffects, RocksEffects, SyncEffects]),
     provideStoreDevtools({ maxAge: 25, logOnly: !isDevMode() }),
   ],
 };
